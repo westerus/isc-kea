@@ -10,8 +10,8 @@ ARG PKGUPDATE="yaourt ${PKG_FLAGS_COMMON} -y"
 ARG PKGUPGRADE="yaourt ${PKG_FLAGS_PERSISTANT} -y -u -q --aur"
 ARG PKGCLEAN="yaourt ${PKG_FLAGS_PERSISTANT} -cc"
 ARG DELTEMP="rm -rf /var/tmp/* /tmp/*"
-ARG PKGINSTALL="yaourt ${PKG_FLAGS_PERSISTANT} -q"
-ARG PKGREMOVE="apk ${PKG_FLAGS_COMMON} --purge del"
+ARG PKGINSTALL="yaourt ${PKG_FLAGS_PERSISTANT}"
+ARG PKGREMOVE="yaourt -R -q --force --noconfirm"
 ARG TERM="xterm"
 
 COPY /rootfs/entry-point.sh /
