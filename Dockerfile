@@ -26,4 +26,4 @@ RUN $PKGUPDATE \
 
 USER root
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/entry-point.sh"]
