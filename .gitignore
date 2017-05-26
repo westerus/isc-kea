@@ -2,6 +2,8 @@
 !.gitkeep
 !db/data/.gitignore
 db/data/*
+!control/socks/.gitignore
+control/socks/*
 
 ### Git ###
 *.orig
