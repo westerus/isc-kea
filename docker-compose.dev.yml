@@ -1,0 +1,32 @@
+version: "2"
+
+services:
+  db:
+    image: mariadb
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+      - ./db/data:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=keadb
+      - MYSQL_USER=kea
+      - MYSQL_PASSWORD=.k34_p4ssw0r_
+  dhcpv4:
+    image: westerus/isc-kea
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./dhcpv4/conf/kea.conf:/etc/kea/kea.conf
+      - ./control/socks:/tmp
+    network_mode: "host"
+    depends_on:
+      - db
+  control:
+    image: westerus/isc-kea:control
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./control/conf/kea-ca.conf:/etc/kea/kea-ca.conf
+      - ./control/socks:/tmp
+    depends_on:
+      - db
