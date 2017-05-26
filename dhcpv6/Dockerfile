@@ -54,7 +54,7 @@ RUN  $PKGUPDATE \
       --with-dhcp-pgsql \
   && make -j2 \
   && make install \
-  && PKGREMOVE autoconf \
+  && $PKGREMOVE autoconf \
       g++ \
       make \
       git \
