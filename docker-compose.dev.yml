@@ -8,6 +8,9 @@ services:
       - ./db/data:/var/lib/mysql
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=keadb
+      - MYSQL_USER=kea
+      - MYSQL_PASSWORD=.k34_p4ssw0r_
   dhcpv4:
     image: westerus/isc-kea
     volumes:
