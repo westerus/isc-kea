@@ -18,7 +18,7 @@ ARG LOCALEGEN="locale-gen $LC_ALL && dpkg-reconfigure locales"
 
 ENV LANG="es_ES.UTF-8" LANGUAGE="es_ES:es" LC_ALL="es_ES.UTF-8" DEBIAN_FRONTEND="noninteractive" TERM="xterm"
 
-ENV KEAURL="https://github.com/isc-projects/kea" KEACONF="/etc/kea/kea-ca.conf"
+ENV KEAURL="https://github.com/isc-projects/kea" KEABRANCH="v1_2_0" KEACONF="/etc/kea/kea-ca.conf"
 
 COPY /rootfs/entry-point.sh /
 
@@ -42,7 +42,7 @@ RUN  $PKGUPDATE \
       ca-certificates \
       locales \
   && $LOCALEGEN \
-  && git clone $KEAURL . \
+  && git clone $KEAURL -b $KEABRANCH . \
   && autoreconf --install --force --warnings='all' \
   && ./configure --prefix='/usr' \
       --sbindir='${exec_prefix}/bin' \
