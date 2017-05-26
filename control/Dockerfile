@@ -18,7 +18,7 @@ ARG LOCALEGEN="locale-gen $LC_ALL && dpkg-reconfigure locales"
 
 ENV LANG="es_ES.UTF-8" LANGUAGE="es_ES:es" LC_ALL="es_ES.UTF-8" DEBIAN_FRONTEND="noninteractive" TERM="xterm"
 
-ENV KEAURL="https://github.com/isc-projects/kea" KEACONF="/etc/kea/kea.conf"
+ENV KEAURL="https://github.com/isc-projects/kea" KEACONF="/etc/kea/kea-ca.conf"
 
 COPY /rootfs/entry-point.sh /
 
@@ -58,10 +58,11 @@ RUN  $PKGUPDATE \
       g++ \
       make \
       git \
+      automake \
   && $PKGCLEAN \
   && $DELTEMP
 
 WORKDIR /root
 
 ENTRYPOINT ["/entry-point.sh"]
-CMD ["kea-dhcp6","-d","-c","$KEACONF"]
+CMD ["kea-ctrl-agent","-d","-c","$KEACONF"]
