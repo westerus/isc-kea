@@ -58,10 +58,11 @@ RUN  $PKGUPDATE \
       g++ \
       make \
       git \
+      automake \
   && $PKGCLEAN \
   && $DELTEMP
 
 WORKDIR /root
 
 ENTRYPOINT ["/entry-point.sh"]
-CMD ["kea-dhcp6","-d","-c","$KEACONF"]
+CMD ["kea-dhcp-ddns","-d","-c","$KEACONF"]

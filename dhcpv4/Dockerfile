@@ -65,4 +65,4 @@ RUN  $PKGUPDATE \
 WORKDIR /root
 
 ENTRYPOINT ["/entry-point.sh"]
-CMD ["kea-dhcp4","-d","-f","$KEACONF"]
+CMD ["kea-dhcp4","-d","-c","$KEACONF"]
