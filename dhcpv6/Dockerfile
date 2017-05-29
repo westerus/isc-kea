@@ -21,7 +21,7 @@ ARG LOCALEGEN="locale-gen $LC_ALL && dpkg-reconfigure locales"
 
 ENV LANG="es_ES.UTF-8" LANGUAGE="es_ES:es" LC_ALL="es_ES.UTF-8" DEBIAN_FRONTEND="noninteractive" TERM="xterm"
 
-ENV KEAURL="https://github.com/isc-projects/kea" KEABRANCH="master" KEACONF="/etc/kea/kea.conf"
+ENV KEAURL="https://github.com/isc-projects/kea" KEABRANCH="v1_2_0" KEACONF="/etc/kea/kea.conf"
 
 COPY /rootfs/entry-point.sh /
 
