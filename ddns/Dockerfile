@@ -2,7 +2,7 @@ FROM debian:jessie-slim
 MAINTAINER  Westerus <westerus@gmail.com>
 
 LABEL manteiner="Westerus <westerus@gmail.com>" \
-      description="ISC Kea DHCPv4 Service" \
+      description="ISC Kea DHCP-DDNS Service" \
       version="0.1.0"
 
 ARG PKG_FLAGS_COMMON="-qq -y"
@@ -14,11 +14,14 @@ ARG PKGCLEAN="apt-get ${PKG_FLAGS_COMMON} autoclean"
 ARG DELTEMP="rm -rf /var/tmp/* /tmp/* /usr/src/*"
 ARG PKGINSTALL="apt-get ${PKG_FLAGS_PERSISTANT} install"
 ARG PKGREMOVE="apt-get ${PKG_FLAGS_COMMON} remove"
+ARG PKGRPURGE="apt-get ${PKG_FLAGS_COMMON} purge"
+ARG LIBREMOVE="dpkg -r --force-depends"
+ARG LIBPURGE="dpkg -P --force-depends"
 ARG LOCALEGEN="locale-gen $LC_ALL && dpkg-reconfigure locales"
 
 ENV LANG="es_ES.UTF-8" LANGUAGE="es_ES:es" LC_ALL="es_ES.UTF-8" DEBIAN_FRONTEND="noninteractive" TERM="xterm"
 
-ENV KEAURL="https://github.com/isc-projects/kea" KEABRANCH="v1_2_0" KEACONF="/etc/kea/kea.conf"
+ENV KEAURL="https://github.com/isc-projects/kea" KEABRANCH="master" KEACONF="/etc/kea/kea.conf"
 
 COPY /rootfs/entry-point.sh /
 
@@ -27,20 +30,20 @@ WORKDIR /usr/src/kea
 RUN  $PKGUPDATE \
   && $PKGUPGRADE \
   && $PKGINSTALL libtool \
-      autoconf \
-      g++ \
-      make \
-      automake \
-      libssl-dev \
-      liblog4cplus-dev \
-      libboost-dev \
-      libboost-system-dev \
-      libmysqlclient-dev \
-      libpq-dev \
-      postgresql-server-dev-all \
-      git \
-      ca-certificates \
-      locales \
+        autoconf \
+        g++ \
+        make \
+        automake \
+        libssl-dev \
+        libpq-dev \
+        liblog4cplus-dev \
+        libboost-dev \
+        libboost-system-dev \
+        libmysqlclient-dev \
+        postgresql-server-dev-all \
+        git \
+        ca-certificates \
+        locales \
   && $LOCALEGEN \
   && git clone $KEAURL -b $KEABRANCH . \
   && autoreconf --install --force --warnings='all' \
@@ -54,11 +57,18 @@ RUN  $PKGUPDATE \
       --with-dhcp-pgsql \
   && make -j2 \
   && make install \
-  && $PKGREMOVE autoconf \
-      g++ \
-      make \
-      git \
-      automake \
+  && $LIBPURGE postgresql-server-dev-all \
+        libmysqlclient-dev \
+        libboost-system-dev \
+        libboost-dev \
+        liblog4cplus-dev \
+        libpq-dev \
+        libssl-dev \
+  && $PKGPURGE autoconf \
+        g++ \
+        make \
+        git \
+        automake \
   && $PKGCLEAN \
   && $DELTEMP
 
