@@ -62,7 +62,6 @@ RUN  $PKGUPDATE \
         libboost-system-dev \
         libboost-dev \
         liblog4cplus-dev \
-        libpq-dev \
         libssl-dev \
   && $PKGPURGE autoconf \
         g++ \
