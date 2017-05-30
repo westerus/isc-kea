@@ -14,12 +14,11 @@ ARG PKGCLEAN="apt-get ${PKG_FLAGS_COMMON} autoclean"
 ARG DELTEMP="rm -rf /var/tmp/* /tmp/* /usr/src/*"
 ARG PKGINSTALL="apt-get ${PKG_FLAGS_PERSISTANT} install"
 ARG PKGREMOVE="apt-get ${PKG_FLAGS_COMMON} remove"
-ARG PKGRPURGE="apt-get ${PKG_FLAGS_COMMON} purge"
+ARG PKGPURGE="apt-get ${PKG_FLAGS_COMMON} purge"
 ARG LIBREMOVE="dpkg -r --force-depends"
 ARG LIBPURGE="dpkg -P --force-depends"
-ARG LOCALEGEN="locale-gen $LC_ALL && dpkg-reconfigure locales"
 
-ENV LANG="es_ES.UTF-8" LANGUAGE="es_ES:es" LC_ALL="es_ES.UTF-8" DEBIAN_FRONTEND="noninteractive" TERM="xterm"
+ENV DEBIAN_FRONTEND="noninteractive" TERM="xterm"
 
 ENV KEAURL="https://github.com/isc-projects/kea" KEABRANCH="v1_2_0" KEACONF="/etc/kea/kea.conf"
 
@@ -43,8 +42,6 @@ RUN  $PKGUPDATE \
         postgresql-server-dev-all \
         git \
         ca-certificates \
-        locales \
-  && $LOCALEGEN \
   && git clone $KEAURL -b $KEABRANCH . \
   && autoreconf --install --force --warnings='all' \
   && ./configure --prefix='/usr' \
@@ -63,7 +60,6 @@ RUN  $PKGUPDATE \
         libboost-dev \
         liblog4cplus-dev \
         libpq-dev \
-        libssl-dev \
   && $PKGPURGE autoconf \
         g++ \
         make \
