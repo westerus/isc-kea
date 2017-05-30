@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM westerus/isc-kea:base
 MAINTAINER  Westerus <westerus@gmail.com>
 
 LABEL manteiner="Westerus <westerus@gmail.com>" \
