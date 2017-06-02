@@ -2,10 +2,15 @@ version: "2"
 
 services:
   db:
-    image: mariadb
+    image: healthcheck/mariadb
     volumes:
-      - ./db/sql:/docker-entrypoint-initdb.d
+      - ./db/sql/my.sql:/docker-entrypoint-initdb.d/
       - ./db/data:/var/lib/mysql
+    networks:
+      net:
+        ipv4_address: 172.18.235.11
+    ports:
+      - "3306"
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
       - MYSQL_DATABASE=keadb
@@ -19,6 +24,8 @@ services:
       - ./dhcpv4/conf/kea.conf:/etc/kea/kea.conf
       - ./control/socks:/tmp
     network_mode: "host"
+    extra_hosts:
+      - "db:172.18.235.11"
     depends_on:
       - db
   control:
@@ -28,5 +35,12 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ./control/conf/kea-ca.conf:/etc/kea/kea-ca.conf
       - ./control/socks:/tmp
+    network_mode: "host"
     depends_on:
       - db
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      driver: default
